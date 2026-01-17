@@ -67,19 +67,46 @@ public class Accounts {
 
 
     private long generateAccountNumber() {
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT account_number from Accounts ORDER BY account_number DESC LIMIT 1");
-            if (resultSet.next()) {
-                long last_account_number = resultSet.getLong("account_number");
-                return last_account_number+1;
-            } else {
-                return 10000100;
+//        try {
+//            Statement statement = connection.createStatement();
+//            ResultSet resultSet = statement.executeQuery("SELECT account_number from Accounts ORDER BY account_number DESC LIMIT 1");
+//            if (resultSet.next()) {
+//                long last_account_number = resultSet.getLong("account_number");
+//                return last_account_number+1;
+//            } else {
+//                return 10000100;
+//            }
+//        }catch (SQLException e){
+//            e.printStackTrace();
+//        }
+//        return 10000100;
+
+        long account_number = 0;
+        Random rm = new Random();
+        long min = 1000000000L;
+        long max = 9999999999L;
+
+        String query  = "Select account_number from accounts where accounts_number = ?";
+
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            while (true){
+                account_number = rm.nextLong(min,max+1);
+                preparedStatement.setLong(1,account_number);
+                ResultSet rs = preparedStatement.executeQuery();
+                if(rs.next()){
+                    continue;
+                }
+                else{
+                    break;
+                }
+
             }
         }catch (SQLException e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
-        return 10000100;
+
+        return account_number;
 
 
     }
