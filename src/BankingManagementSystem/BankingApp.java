@@ -10,7 +10,7 @@ public class BankingApp {
     private static final String username = "root";
     private static final String password = "nilesh123";
 
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+    public static void main(String[] args) {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
         }catch (ClassNotFoundException e){
